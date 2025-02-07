@@ -1,0 +1,65 @@
+let timer;
+let minutes = 25;
+let seconds = 0;
+let running = false;
+let totalStudyTime = 0;
+
+// Set Timer Duration
+function setTime(min) {
+    minutes = min;
+    seconds = 0;
+    document.getElementById('time-display').textContent = `${minutes}:00`;
+}
+
+// Start Timer
+function startTimer() {
+    if (!running) {
+        running = true;
+        timer = setInterval(updateTimer, 1000);
+    }
+}
+
+// Reset Timer
+function resetTimer() {
+    clearInterval(timer);
+    running = false;
+    document.getElementById('time-display').textContent = `${minutes}:00`;
+}
+
+// Update Timer
+function updateTimer() {
+    if (minutes === 0 && seconds === 0) {
+        clearInterval(timer);
+        running = false;
+        totalStudyTime += minutes;
+        document.getElementById('total-time').textContent = totalStudyTime;
+        alert("Session Completed!");
+        return;
+    }
+
+    if (seconds === 0) {
+        minutes--;
+        seconds = 59;
+    } else {
+        seconds--;
+    }
+
+    document.getElementById('time-display').textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+}
+
+// Add Task
+function addTask() {
+    let taskInput = document.getElementById('task-input').value;
+    if (taskInput.trim() === '') return;
+
+    let taskList = document.getElementById('task-list');
+    let li = document.createElement('li');
+    li.textContent = taskInput;
+
+    li.addEventListener('click', function() {
+        this.remove();
+    });
+
+    taskList.appendChild(li);
+    document.getElementById('task-input').value = '';
+}
